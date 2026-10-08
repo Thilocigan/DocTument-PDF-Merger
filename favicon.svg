@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Background Gradient matching DocTument brand -->
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    
+    <!-- Subtle Top Gloss -->
+    <linearGradient id="glossGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Fold Corner Gradient -->
+    <linearGradient id="foldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#ddd6fe" stop-opacity="0.75" />
+    </linearGradient>
+
+    <!-- Drop Shadow for Letter T -->
+    <filter id="tShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1" flood-color="#312e81" flood-opacity="0.55" />
+    </filter>
+  </defs>
+
+  <!-- App Icon Squircle Container -->
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="url(#brandGrad)" />
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="url(#glossGrad)" />
+
+  <!-- Document Sheet Shape -->
+  <path d="M18 11 H37 L47 21 V49 C47 51.2 45.2 53 43 53 H18 C15.8 53 14 51.2 14 49 V15 C14 12.8 15.8 11 18 11 Z"
+        fill="#ffffff" fill-opacity="0.16" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" />
+
+  <!-- Document Folded Ear -->
+  <path d="M37 11 V19 C37 20.1 37.9 21 39 21 H47 Z"
+        fill="url(#foldGrad)" />
+
+  <!-- The Signature Capital 'T' of DocTument -->
+  <g filter="url(#tShadow)">
+    <path d="M21 27 C21 25.9 21.9 25 23 25 H39 C40.1 25 41 25.9 41 27 C41 28.1 40.1 29 39 29 H33.5 V46 C33.5 47.1 32.6 48 31.5 48 C30.4 48 29.5 47.1 29.5 46 V29 H23 C21.9 29 21 28.1 21 27 Z"
+          fill="#ffffff" />
+  </g>
+</svg>

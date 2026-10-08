@@ -1,0 +1,28 @@
+{
+  "name": "doctument",
+  "version": "1.0.0",
+  "description": "DocTument - Smart Folder Parser, Natural Numerical Sorter, Fullscreen PDF Studio Editor, and 100% In-Browser PDF Merger",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx serve -l 3000 .",
+    "test": "node -c app.js && node -c editor.js"
+  },
+  "keywords": [
+    "pdf",
+    "pdf-merger",
+    "pdf-sorter",
+    "pdf-editor",
+    "drag-and-drop",
+    "client-side",
+    "offline",
+    "doctument",
+    "pdf-lib"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "jszip": "^3.10.2",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^3.11.174"
+  }
+}

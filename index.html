@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocTument | Smart PDF Sorter &amp; Merger</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-light">
+  <!-- App Container -->
+  <div class="app-layout">
+    
+    <!-- Header / Navbar -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <path d="M16 13H8"></path>
+            <path d="M16 17H8"></path>
+            <path d="M10 9H8"></path>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1 class="logo-brand">Doc<span class="brand-highlight-t">T</span>ument</h1>
+          <span class="logo-sub">Smart Folder Parser • Natural Sort • Drag &amp; Drop • In-Browser Merge</span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="privacy-badge" title="All processing happens inside your browser. No files are uploaded to any server.">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>100% Offline &amp; Private</span>
+        </div>
+
+        <button id="themeToggleBtn" class="icon-btn" title="Toggle Dark / Light Mode" aria-label="Toggle Theme">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Upload / Drop Section -->
+      <section class="upload-section">
+        <div id="dropZone" class="drop-zone">
+          <div class="drop-zone-content">
+            <div class="drop-zone-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                <line x1="12" y1="11" x2="12" y2="17"></line>
+                <polyline points="9 14 12 11 15 14"></polyline>
+              </svg>
+            </div>
+            
+            <h2 class="drop-title">Drop your folder or documents here</h2>
+           
+
+            <div class="upload-buttons">
+              <!-- Folder Upload Input -->
+              <input type="file" id="folderInput" webkitdirectory directory multiple class="hidden-input" aria-label="Upload Folder">
+              <button id="btnUploadFolder" class="btn btn-primary btn-lg" type="button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Upload Folder</span>
+              </button>
+
+              <!-- Multiple Files Input -->
+              <input type="file" id="filesInput" multiple accept=".pdf,image/png,image/jpeg,image/webp" class="hidden-input" aria-label="Upload Individual Files">
+              <button id="btnUploadFiles" class="btn btn-secondary btn-lg" type="button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="12" y1="18" x2="12" y2="12"></line>
+                  <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+                <span>Select Files</span>
+              </button>
+
+              <!-- Try Demo Button -->
+              <button id="btnLoadDemo" class="btn btn-outline btn-lg" type="button" title="Load sample documents to test parsing, sorting, reordering, and merging">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span>Load Sample Files</span>
+              </button>
+            </div>
+
+            <div class="drop-hint">
+              <span>Supports: <strong>PDF</strong>, <strong>PNG</strong>, <strong>JPG / JPEG</strong>, <strong>WebP</strong></span>
+              <span class="divider">•</span>
+              <span>Subfolders supported</span>
+              <span class="divider">•</span>
+              <span>Zero server upload</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parsing & Options Drawer -->
+        <div class="settings-card">
+          <div class="settings-header" id="settingsToggle">
+            <div class="settings-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+              <span>Filename Parsing &amp; Output Settings</span>
+            </div>
+            <div class="settings-toggle-icon">
+              <svg id="settingsChevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <div class="settings-body" id="settingsBody">
+            <div class="settings-grid">
+              
+              <!-- Parsing Mode -->
+              <div class="form-group">
+                <label for="parseModeSelect">Grouping &amp; Parsing Mode:</label>
+                <select id="parseModeSelect" class="form-control">
+                  <option value="smart" selected>Smart Auto-Detect (Name_01, Name - Part 1, Name (1))</option>
+                  <option value="subfolder">Subfolder Name as Person (if folder uploaded)</option>
+                  <option value="delimiter">Delimiter Split (Prefix before delimiter)</option>
+                  <option value="custom">Custom Regular Expression Pattern</option>
+                </select>
+                <small class="form-hint" id="parseModeHint">Extracts the person's name prior to page/part numbers, copy tags, or delimiters.</small>
+              </div>
+
+              <!-- Delimiter Input (Conditional) -->
+              <div class="form-group" id="delimiterGroup" style="display: none;">
+                <label for="delimiterInput">Delimiter Character / String:</label>
+                <input type="text" id="delimiterInput" class="form-control" value="_" placeholder="e.g. _ or - or ,">
+                <small class="form-hint">Text before the first occurrence will be treated as the person's name.</small>
+              </div>
+
+              <!-- Custom Regex (Conditional) -->
+              <div class="form-group" id="customRegexGroup" style="display: none;">
+                <label for="customRegexInput">Custom Regex (Capture Groups: 1=Name, 2=Number):</label>
+                <input type="text" id="customRegexInput" class="form-control" value="^(.*?)[_\s\-]+(?:page|part)?\s*(\d+)" placeholder="^(.*?)[_\s\-]+(\d+)">
+                <small class="form-hint">Group 1 matches person name, Group 2 matches file sequence number.</small>
+              </div>
+
+              <!-- Normalization -->
+              <div class="form-group">
+                <label>Text Normalization:</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="chkCleanWhitespace" checked>
+                    <span>Replace underscores/hyphens with spaces</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="chkTitleCase" checked>
+                    <span>Format names in Title Case (e.g. "JOHN DOE" &rarr; "John Doe")</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- PDF Options -->
+              <div class="form-group">
+                <label>Merged PDF Output Options:</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="chkAddPageNumbers">
+                    <span>Stamp "Page X of Y" page numbers in footer</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="chkCompressOutput" checked>
+                    <span>Optimize &amp; normalize page dimensions</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="settings-actions">
+              <button id="btnReparse" class="btn btn-secondary btn-sm" type="button">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                </svg>
+                <span>Re-apply Parsing Rules to Loaded Files</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Workspace Section (Visible when files loaded) -->
+      <section id="workspaceSection" class="workspace-section" style="display: none;">
+        
+        <!-- Summary & Batch Controls Bar -->
+        <div class="summary-bar">
+          <div class="summary-metrics">
+            <div class="metric-card">
+              <span class="metric-label">Persons</span>
+              <span class="metric-value" id="metricPersons">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Total Files</span>
+              <span class="metric-value" id="metricFiles">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Ready Status</span>
+              <span class="metric-badge status-ready" id="metricStatus">Ready to Merge</span>
+            </div>
+          </div>
+
+          <!-- Search & Filter -->
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Filter by person name or filename..." aria-label="Search persons">
+            <button id="btnClearSearch" class="search-clear-btn" style="display:none;" title="Clear search">&times;</button>
+          </div>
+
+          <!-- Batch Action Buttons -->
+          <div class="batch-actions">
+            <button id="btnSortAll" class="btn btn-secondary btn-sm" title="Re-sort all files in every group in natural numerical order">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18M6 12h12m-9 6h6"></path>
+              </svg>
+              <span>Sort All (1&rarr;N)</span>
+            </button>
+
+            <button id="btnToggleAllCards" class="btn btn-secondary btn-sm" title="Collapse or Expand all person groups">
+              <svg id="toggleAllIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 14 10 8 16 14"></polyline>
+              </svg>
+              <span id="toggleAllText">Collapse All</span>
+            </button>
+
+            <button id="btnMergeAllZip" class="btn btn-primary btn-sm btn-merge-all" title="Merge each person's files into their individual PDF and download all as a ZIP archive">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Merge All &amp; Download ZIP</span>
+            </button>
+
+            <button id="btnClearAll" class="btn btn-danger-outline btn-sm" title="Remove all files and reset workspace">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              <span>Clear</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Groups Preview Container -->
+        <div id="groupsContainer" class="groups-container">
+          <!-- Dynamically populated person cards will render here -->
+        </div>
+
+      </section>
+
+      <!-- Empty State Guide -->
+      <section id="emptyGuideSection" class="empty-guide-section">
+        <div class="guide-card">
+          <h3>How It Works</h3>
+          <div class="guide-steps">
+            <div class="step-card">
+              <div class="step-num">1</div>
+              <h4>Upload Folder or Files</h4>
+              <p>Select a folder or drag in multiple PDF / image documents. Everything stays in your browser.</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">2</div>
+              <h4>Auto-Grouping &amp; Sorting</h4>
+              <p>Filenames are parsed to identify the person's name and numbers are naturally sorted (e.g. <code>Part 1</code>, <code>Part 2</code>, <code>Part 10</code>).</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">3</div>
+              <h4>Drag &amp; Drop Reorder</h4>
+              <p>Fine-tune the exact sequence per person using intuitive drag-and-drop handles or up/down buttons.</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">4</div>
+              <h4>Merge &amp; Download</h4>
+              <p>Download each person's merged PDF individually, preview live, or download all in a single ZIP.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <span><strong>Doc<span class="brand-highlight-t" style="font-size:0.88em; padding: 0 4px; box-shadow: none;">T</span>ument.</strong>  ©️All Rights Reserved.</span>
+        <span class="footer-privacy">Private Client-Side Processing • No Uploads</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- MODAL 1: Person Document Rearrange & Merge Overview Modal -->
+  <div id="previewModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="previewModalTitle">
+    <div class="modal-container modal-studio">
+      
+      <!-- Studio Header -->
+      <div class="modal-header studio-header">
+        <div class="studio-title-area">
+          <div class="modal-title-wrapper">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <div>
+              <h3 id="previewModalTitle" class="modal-title">PDF Documents Overview &amp; Rearrange</h3>
+              <span id="previewModalSub" class="modal-sub">Drag whole PDF files to rearrange merge sequence • Click "✏️ Edit PDF" on any file to add images or edit text</span>
+            </div>
+          </div>
+          <span id="editorDocCountBadge" class="badge badge-count">0 Documents</span>
+        </div>
+
+        <div class="studio-header-actions">
+          <!-- View Mode Toggle -->
+          <div class="view-mode-toggle" role="tablist">
+            <button id="btnViewGrid" class="view-toggle-btn active" role="tab" aria-selected="true" title="PDF Documents Grid (Drag to rearrange files & edit)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+              <span>PDF Documents</span>
+            </button>
+            <button id="btnViewFull" class="view-toggle-btn" role="tab" aria-selected="false" title="Full Merged Document Preview">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+              <span>Merged Document</span>
+            </button>
+          </div>
+
+          <!-- Merge & Download PDF -->
+          <button id="btnSaveEditedPdf" class="btn btn-success btn-sm" title="Merge all documents in this order and download the combined PDF">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Merge &amp; Download PDF</span>
+          </button>
+
+          <button id="btnClosePreviewModal" class="icon-btn modal-close-btn" aria-label="Close modal">&times;</button>
+        </div>
+      </div>
+
+      <!-- Toolbar for Document Rearranging -->
+      <div class="studio-toolbar">
+        <div class="toolbar-left">
+          <button id="btnSortDocsNumerically" class="btn btn-secondary btn-xs" title="Sort all documents in natural numerical order">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M6 12h12m-9 6h6"></path>
+            </svg>
+            <span>Sort 1&rarr;N</span>
+          </button>
+
+          <button id="btnReverseDocs" class="btn btn-secondary btn-xs" title="Reverse the document order">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 3 21 3 21 8"></polyline>
+              <line x1="4" y1="20" x2="21" y2="3"></line>
+              <polyline points="21 16 21 21 16 21"></polyline>
+              <line x1="15" y1="15" x2="21" y2="21"></line>
+            </svg>
+            <span>Reverse Order</span>
+          </button>
+
+          <button id="btnOverviewEditAll" class="btn btn-primary btn-xs" title="Open full-screen editor studio in a new webpage with free space">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            <span>Edit All (Open in New Page)</span>
+          </button>
+        </div>
+
+        <div class="toolbar-right">
+          <span class="editor-instruction-hint"> Drag PDF cards to rearrange merge sequence • Click <strong>   Edit PDF</strong> to add images or edit text</span>
+        </div>
+      </div>
+
+      <!-- Studio Body (Document Cards Grid or Full Preview) -->
+      <div class="modal-body studio-body">
+        
+        <!-- Loading Spinner -->
+        <div id="studioLoading" class="preview-loading" style="display: none;">
+          <div class="spinner"></div>
+          <p id="studioLoadingText">Rendering PDF document previews...</p>
+        </div>
+
+        <!-- Mode 1: PDF Documents Grid (One card per whole PDF file) -->
+        <div id="editorDocGridContainer" class="editor-grid-container">
+          <!-- Dynamically populated document cards render here -->
+        </div>
+
+        <!-- Mode 2: Full Merged Document Viewer -->
+        <div id="editorFullPreviewContainer" class="editor-full-preview-container" style="display: none;">
+          <iframe id="previewIframe" class="preview-iframe" title="Document Preview Viewer" src="about:blank"></iframe>
+        </div>
+
+      </div>
+
+      <!-- Studio Footer -->
+      <div class="studio-footer">
+        <div class="footer-status-left">
+          <span id="editorStatusMsg">Ready. Drag whole PDF cards to reorder, or click Edit PDF.</span>
+        </div>
+        <div class="footer-status-right">
+          <span id="editorTotalPagesCount">0 Total Pages</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 2: Dedicated Interactive PDF Editor Modal (Add Images, Align, Edit Text) -->
+  <div id="pdfEditorModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="pdfEditorTitle">
+    <div class="modal-container modal-pdf-editor">
+      
+      <!-- Editor Header -->
+      <div class="modal-header pdf-editor-header">
+        <div class="pdf-editor-title-area">
+          <div class="modal-title-wrapper">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+            <div>
+              <h3 id="pdfEditorTitle" class="modal-title">Edit PDF</h3>
+              <span id="pdfEditorSub" class="modal-sub">Add &amp; align images across all pages • Edit &amp; replace text</span>
+            </div>
+          </div>
+          <span id="pdfEditorPageBadge" class="badge badge-count">Page 1 of 1</span>
+        </div>
+
+        <div class="pdf-editor-actions">
+          <button id="btnHeaderOpenFullscreen" class="btn btn-secondary btn-sm" type="button" title="Open dedicated full webpage with unconstrained free space">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            <span>Edit All (Open in New Page)</span>
+          </button>
+
+          <button id="btnSavePdfEdits" class="btn btn-success btn-sm" title="Burn added images, text, and alignments into this PDF">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            <span>Save &amp; Apply to PDF</span>
+          </button>
+
+          <button id="btnDownloadSingleEditedPdf" class="btn btn-primary btn-sm" title="Download this edited PDF document">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download</span>
+          </button>
+
+          <button id="btnClosePdfEditor" class="icon-btn modal-close-btn" aria-label="Close PDF Editor">&times;</button>
+        </div>
+      </div>
+
+      <!-- Editor Action Toolbar -->
+      <div class="pdf-editor-toolbar">
+        <div class="toolbar-left">
+          <!-- Hidden Image File Input -->
+          <input type="file" id="pdfAddImageInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="hidden-input" aria-label="Upload Image to PDF">
+          
+          <button id="btnTriggerAddImage" class="btn btn-primary btn-xs" type="button" title="Upload an image/logo/signature to add to the PDF">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            <span>+ Add Image</span>
+          </button>
+
+          <button id="btnTriggerAddText" class="btn btn-secondary btn-xs" type="button" title="Add, edit, or replace text on the PDF">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="4 7 4 4 20 4 20 7"></polyline>
+              <line x1="9" y1="20" x2="15" y2="20"></line>
+              <line x1="12" y1="4" x2="12" y2="20"></line>
+            </svg>
+            <span>+ Add / Edit Text</span>
+          </button>
+
+          <button id="btnToolbarOpenFullscreen" class="btn btn-primary btn-xs" type="button" title="Open in dedicated webpage with unconstrained free space, alignment tools & delete/remove controls">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            <span>Edit All (Open in New Webpage)</span>
+          </button>
+
+          <div class="toolbar-separator"></div>
+
+          <!-- Page Navigator -->
+          <div class="pdf-page-nav">
+            <button id="btnPdfPrevPage" class="icon-btn btn-xs" title="Previous Page" aria-label="Previous Page">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <span id="pdfPageNavIndicator" class="page-nav-indicator">Page 1 of 1</span>
+            <button id="btnPdfNextPage" class="icon-btn btn-xs" title="Next Page" aria-label="Next Page">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="toolbar-right">
+          <span class="editor-instruction-hint">💡 Drag added image/text directly on the page to reposition</span>
+        </div>
+      </div>
+
+      <!-- Drawer 1: Image Alignment & Controls Drawer -->
+      <div id="imageEditDrawer" class="edit-tool-drawer" style="display: none;">
+        <div class="drawer-inner">
+          <div class="drawer-header-row">
+            <h4><span id="imageDrawerTitle">Added Image Alignment &amp; Size</span></h4>
+            <button id="btnRemoveImage" class="btn btn-danger-outline btn-xs" type="button">Remove Image</button>
+          </div>
+
+          <div class="drawer-grid">
+            <!-- Alignment Presets -->
+            <div class="drawer-col">
+              <label>Align Image into PDF:</label>
+              <div class="align-presets-grid">
+                <button type="button" class="btn-align-preset" data-align="top-left" title="Top Left">↖ Top-Left</button>
+                <button type="button" class="btn-align-preset" data-align="top-center" title="Top Center">↑ Top-Center</button>
+                <button type="button" class="btn-align-preset" data-align="top-right" title="Top Right">↗ Top-Right</button>
+                <button type="button" class="btn-align-preset" data-align="mid-left" title="Middle Left">← Mid-Left</button>
+                <button type="button" class="btn-align-preset active" data-align="center" title="Center (Watermark)">• Center</button>
+                <button type="button" class="btn-align-preset" data-align="mid-right" title="Middle Right">→ Mid-Right</button>
+                <button type="button" class="btn-align-preset" data-align="bottom-left" title="Bottom Left">↙ Bottom-Left</button>
+                <button type="button" class="btn-align-preset" data-align="bottom-center" title="Bottom Center">↓ Bottom-Center</button>
+                <button type="button" class="btn-align-preset" data-align="bottom-right" title="Bottom Right (Signature)">↘ Bottom-Right</button>
+              </div>
+            </div>
+
+            <!-- Size & Opacity -->
+            <div class="drawer-col">
+              <label for="sliderImageScale">Image Size: <strong id="lblImageScale">40%</strong></label>
+              <input type="range" id="sliderImageScale" min="10" max="150" value="40" class="range-slider">
+
+              <label for="sliderImageOpacity" style="margin-top: 0.5rem;">Opacity: <strong id="lblImageOpacity">100%</strong></label>
+              <input type="range" id="sliderImageOpacity" min="10" max="100" value="100" class="range-slider">
+            </div>
+
+            <!-- All Pages Scope Checkbox (KEY REQUIREMENT) -->
+            <div class="drawer-col drawer-col-scope">
+              <label class="scope-highlight-box">
+                <input type="checkbox" id="chkImageAllPages" checked>
+                <div>
+                  <strong>Show image on ALL and every page in PDF</strong>
+                  <p class="scope-desc">Repeats the image in this position across all pages (ideal for logos, stamps &amp; watermarks).</p>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drawer 2: Text Annotation & Whiteout Replacement Drawer -->
+      <div id="textEditDrawer" class="edit-tool-drawer" style="display: none;">
+        <div class="drawer-inner">
+          <div class="drawer-header-row">
+            <h4>Add / Edit Text</h4>
+            <button id="btnRemoveText" class="btn btn-danger-outline btn-xs" type="button">Remove Text</button>
+          </div>
+
+          <div class="drawer-grid">
+            <div class="drawer-col" style="flex: 1.5;">
+              <label for="txtEditContent">Text Content:</label>
+              <input type="text" id="txtEditContent" class="form-control form-control-sm" placeholder="Type text here..." value="CONFIDENTIAL">
+            </div>
+
+            <div class="drawer-col">
+              <label for="selTextFontSize">Font Size:</label>
+              <select id="selTextFontSize" class="form-control form-control-sm">
+                <option value="12">12 px</option>
+                <option value="14">14 px</option>
+                <option value="16" selected>16 px</option>
+                <option value="20">20 px</option>
+                <option value="24">24 px</option>
+                <option value="32">32 px</option>
+                <option value="42">42 px</option>
+              </select>
+            </div>
+
+            <div class="drawer-col">
+              <label for="selTextColor">Color:</label>
+              <select id="selTextColor" class="form-control form-control-sm">
+                <option value="dark" selected>Black / Dark</option>
+                <option value="red">Red</option>
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+                <option value="white">White</option>
+              </select>
+            </div>
+
+            <div class="drawer-col drawer-col-scope">
+              <label class="scope-highlight-box">
+                <input type="checkbox" id="chkTextWhiteout">
+                <div>
+                  <strong>Cover background with white box (Redact / Replace)</strong>
+                  <p class="scope-desc">Draws an opaque white rectangle to hide existing text underneath.</p>
+                </div>
+              </label>
+
+              <label class="checkbox-label" style="margin-top: 0.4rem;">
+                <input type="checkbox" id="chkTextAllPages">
+                <span>Apply text to ALL pages in this PDF</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF Canvas Interactive Workspace Stage -->
+      <div class="modal-body pdf-editor-stage-body">
+        <div id="pdfEditorLoading" class="preview-loading" style="display: none;">
+          <div class="spinner"></div>
+          <p id="pdfEditorLoadingText">Rendering PDF page...</p>
+        </div>
+
+        <div id="pdfStageContainer" class="pdf-stage-container">
+          <div id="pdfCanvasWrapper" class="pdf-canvas-wrapper">
+            <!-- Rendered PDF Page Canvas -->
+            <canvas id="pdfActivePageCanvas" class="pdf-active-canvas"></canvas>
+
+            <!-- Draggable Interactive Overlay Layer -->
+            <div id="pdfOverlayLayer" class="pdf-overlay-layer">
+              <!-- Image Overlay Element (Draggable) -->
+              <div id="imageOverlayElement" class="editor-overlay-element image-overlay" style="display: none;">
+                <div class="overlay-drag-handle" title="Drag to move image">⋮⋮</div>
+                <img id="imageOverlayImg" src="" alt="Overlay Image">
+                <div class="overlay-badge" id="imageOverlayBadge">All Pages</div>
+              </div>
+
+              <!-- Text Overlay Element (Draggable) -->
+              <div id="textOverlayElement" class="editor-overlay-element text-overlay" style="display: none;">
+                <div class="overlay-drag-handle" title="Drag to move text">⋮⋮</div>
+                <span id="textOverlaySpan">CONFIDENTIAL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Editor Footer -->
+      <div class="studio-footer">
+        <div class="footer-status-left">
+          <span id="pdfEditorStatusMsg">Use toolbar to add images or edit text. Drag element on page to position.</span>
+        </div>
+        <div class="footer-status-right">
+          <span id="pdfEditorChangesBadge">No unsaved edits</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Merge Progress Modal -->
+  <div id="progressModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="progressModalTitle">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3 id="progressModalTitle" class="modal-title">Merging Documents...</h3>
+      </div>
+      <div class="modal-body progress-modal-body">
+        <div class="progress-info">
+          <p id="progressStatusText" class="progress-status-text">Preparing files...</p>
+          <span id="progressPercentageText" class="progress-percentage">0%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div id="progressBarFill" class="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+        <p id="progressDetailText" class="progress-detail-text">Please wait while documents are assembled...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Merge Confirmation & Location Windows Picker Modal -->
+  <div id="mergeConfirmModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="mergeConfirmTitle">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <div class="modal-title-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <h3 id="mergeConfirmTitle" class="modal-title">Confirm Merge &amp; Save Location</h3>
+        </div>
+        <button id="btnCloseMergeConfirm" class="icon-btn modal-close-btn" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 1.25rem 1.5rem;">
+        <p id="mergeConfirmDescription" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Ready to merge files for <strong id="lblConfirmPersonName" style="color: var(--text-primary);">JOHN</strong>. A Windows save window will open for you to select your save location.
+        </p>
+
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label for="txtConfirmFilename" style="font-size: 0.82rem; font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 0.35rem;">
+            File Name:
+          </label>
+          <input type="text" id="txtConfirmFilename" class="form-control" value="JOHN REPORTS.pdf" style="font-weight: 600;">
+          <small id="lblConfirmHint" class="form-hint" style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem; display: block;">
+            The person name comes first and ends with "REPORTS.pdf".
+          </small>
+        </div>
+
+        <div style="background-color: var(--bg-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.75rem;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary); flex-shrink: 0;">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <div id="lblConfirmLocationNote" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.35;">
+            <strong>Windows Location Selection:</strong> Clicking "Choose Location &amp; Save" will open the Windows Explorer window to select your destination folder.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding: 0.85rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem; border-top: 1px solid var(--border-color); background-color: var(--bg-subtle);">
+        <button id="btnCancelMergeConfirm" class="btn btn-secondary btn-sm" type="button">Cancel</button>
+        <button id="btnExecuteMergeConfirm" class="btn btn-primary btn-sm" type="button" style="display: inline-flex; align-items: center; gap: 0.4rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          <span id="lblConfirmButtonText">Choose Location &amp; Save</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts: Vendor libraries with CDN fallbacks -->
+  <script src="vendor/pdf-lib.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/pdf-lib@1.17.9/dist/pdf-lib.min.js'"></script>
+  <script src="vendor/pdf.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'"></script>
+  <script src="vendor/jszip.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'"></script>
+  
+  <!-- Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocTument | Fullscreen Editor Studio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body class="theme-light editor-page-body">
+
+  <!-- Fullscreen Studio Layout -->
+  <div class="studio-app-container">
+
+    <!-- Top Navigation & Action Bar -->
+    <header class="studio-top-bar">
+      <div class="top-bar-left">
+        <a href="index.html" class="btn btn-secondary btn-sm btn-back-home" title="Return to main workspace">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span>Doc<span class="brand-highlight-t" style="font-size:0.85em; padding: 0 4px; box-shadow: none;">T</span>ument</span>
+        </a>
+
+        <div class="doc-title-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+          <span id="studioDocTitle" class="studio-doc-title">Loading Document...</span>
+        </div>
+
+        <span id="studioPageCountBadge" class="badge badge-count">Page 1 of 1</span>
+      </div>
+
+      <!-- Quick Page Navigation in Top Bar -->
+      <div class="top-bar-center">
+        <div class="page-stepper">
+          <button id="btnPrevPage" class="stepper-btn" title="Previous Page (◀)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="stepper-text">
+            <span>Page</span>
+            <input type="number" id="inputPageDirect" min="1" value="1" class="page-num-input">
+            <span id="lblTotalPages">/ 1</span>
+          </div>
+          <button id="btnNextPage" class="stepper-btn" title="Next Page (▶)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Zoom Controls -->
+        <div class="zoom-controls">
+          <button id="btnZoomOut" class="icon-btn btn-xs" title="Zoom Out (-)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
+          <span id="lblZoomLevel" class="zoom-label">100%</span>
+          <button id="btnZoomIn" class="icon-btn btn-xs" title="Zoom In (+)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
+          <button id="btnZoomFit" class="btn btn-secondary btn-xs" title="Fit to Screen">Fit</button>
+        </div>
+
+        <!-- History / Undo-Redo Controls -->
+        <div class="history-controls">
+          <button id="btnUndo" class="history-btn" title="Undo last action (Ctrl+Z)" disabled type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 7v6h6"></path>
+              <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+            </svg>
+            <span>Undo</span>
+          </button>
+
+          <button id="btnRedo" class="history-btn" title="Redo action (Ctrl+Y or Ctrl+Shift+Z)" disabled type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 7v6h-6"></path>
+              <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"></path>
+            </svg>
+            <span>Redo</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Save & Export Actions -->
+      <div class="top-bar-right">
+        <button id="btnSaveAndSync" class="btn btn-success btn-sm" title="Save changes and sync back to main workspace">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          <span>Save Changes</span>
+        </button>
+
+        <button id="btnDownloadPdf" class="btn btn-primary btn-sm" title="Download edited PDF document directly">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Download PDF</span>
+        </button>
+
+        <button id="themeToggleBtn" class="icon-btn btn-sm" title="Toggle Dark/Light Mode">
+          <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace (Tools Sidebar + Free-Space Stage) -->
+    <div class="studio-main-workspace">
+
+      <!-- Left Tools & Controls Sidebar (Spacious, clean, accessible) -->
+      <aside class="studio-sidebar">
+        <div class="sidebar-header">
+          <h3>Tools &amp; Content</h3>
+          <span class="sidebar-sub">Click to add, position &amp; align</span>
+        </div>
+
+        <!-- Tool Selection Buttons -->
+        <div class="sidebar-tool-buttons">
+          <!-- Hidden file input for adding image -->
+          <input type="file" id="imageFileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="hidden-input">
+
+          <button id="btnSidebarAddImage" class="tool-card-btn active" type="button">
+            <div class="tool-btn-icon icon-image">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <div class="tool-btn-text">
+              <strong>+ Add Image</strong>
+              <span>Add logo, signature, stamp</span>
+            </div>
+          </button>
+
+          <button id="btnSidebarAddText" class="tool-card-btn" type="button">
+            <div class="tool-btn-icon icon-text">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                <line x1="9" y1="20" x2="15" y2="20"></line>
+                <line x1="12" y1="4" x2="12" y2="20"></line>
+              </svg>
+            </div>
+            <div class="tool-btn-text">
+              <strong>+ Add / Edit Text</strong>
+              <span>Add text box or whiteout</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Added Items / Layers Section (Manage multiple images & text) -->
+        <div class="sidebar-layers-box">
+          <div class="layers-box-header">
+            <span class="layers-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+              <span>Added Items (<strong id="lblLayerCount">0</strong>)</span>
+            </span>
+            <button id="btnClearAllLayers" class="btn-clear-layers" type="button" style="display: none;" title="Remove all added items">Clear All</button>
+          </div>
+          <div id="layersListContainer" class="layers-list">
+            <div id="layersEmptyHint" class="layers-empty-hint">
+              No items added yet. Click <strong>+ Add Image</strong> or <strong>+ Add / Edit Text</strong> above. You can add as many as you need!
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 1: Image Controls Panel -->
+        <div id="panelImageControls" class="tool-content-panel active">
+          <div class="panel-section-title">
+            <span>Image Settings</span>
+            <!-- PROMINENT DELETE FUNCTION FOR IMAGE -->
+            <button id="btnDeleteImageFeature" class="btn btn-danger-outline btn-xs" type="button" title="Delete this image from the PDF">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+              </svg>
+              <span>Delete Image</span>
+            </button>
+          </div>
+
+          <div id="imageStatusEmpty" class="panel-empty-hint">
+            <p>No image currently selected. Click <strong>+ Add Image</strong> above to upload a signature, logo, or stamp.</p>
+          </div>
+
+          <div id="imageStatusActive" class="panel-controls-body" style="display: none;">
+            <!-- Image Info Badge -->
+            <div class="active-item-preview">
+              <img id="sideImgPreview" src="" alt="Thumbnail preview">
+              <div class="active-item-meta">
+                <span id="sideImgName" class="active-item-name">signature.png</span>
+                <span id="sideImgDimensions" class="active-item-sub">200 x 80 px</span>
+              </div>
+            </div>
+
+            <!-- Alignment Presets Grid (9 Buttons) -->
+            <div class="control-group">
+              <label class="control-label">Align Image into PDF:</label>
+              <div class="alignment-grid-3x3">
+                <button type="button" class="btn-align" data-align="top-left" title="Top Left">↖ Top-Left</button>
+                <button type="button" class="btn-align" data-align="top-center" title="Top Center">↑ Top-Center</button>
+                <button type="button" class="btn-align" data-align="top-right" title="Top Right">↗ Top-Right</button>
+                <button type="button" class="btn-align" data-align="mid-left" title="Middle Left">← Mid-Left</button>
+                <button type="button" class="btn-align active" data-align="center" title="Center (Watermark)">• Center</button>
+                <button type="button" class="btn-align" data-align="mid-right" title="Middle Right">→ Mid-Right</button>
+                <button type="button" class="btn-align" data-align="bottom-left" title="Bottom Left">↙ Bottom-Left</button>
+                <button type="button" class="btn-align" data-align="bottom-center" title="Bottom Center">↓ Bottom-Center</button>
+                <button type="button" class="btn-align" data-align="bottom-right" title="Bottom Right (Signature)">↘ Bottom-Right</button>
+              </div>
+              <small class="control-hint">Or click &amp; drag the image directly on the canvas with your mouse!</small>
+            </div>
+
+            <!-- Size Slider -->
+            <div class="control-group">
+              <div class="label-with-value">
+                <label for="rangeImageScale">Image Size:</label>
+                <span id="valImageScale" class="slider-val">40%</span>
+              </div>
+              <input type="range" id="rangeImageScale" min="10" max="150" value="40" class="styled-range">
+            </div>
+
+            <!-- Opacity Slider -->
+            <div class="control-group">
+              <div class="label-with-value">
+                <label for="rangeImageOpacity">Opacity / Transparency:</label>
+                <span id="valImageOpacity" class="slider-val">100%</span>
+              </div>
+              <input type="range" id="rangeImageOpacity" min="10" max="100" value="100" class="styled-range">
+            </div>
+
+            <!-- Show on ALL Pages Checkbox -->
+            <div class="control-group">
+              <label class="scope-card-box">
+                <input type="checkbox" id="chkApplyImageAllPages" checked>
+                <div>
+                  <strong>Show image on ALL and every page</strong>
+                  <p>Repeats the image in this exact position on page 1, 2, 3... all pages in the PDF.</p>
+                </div>
+              </label>
+            </div>
+
+            <!-- Direct Delete Button -->
+            <button id="btnDirectDeleteImage" class="btn btn-danger-outline btn-block btn-sm" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+              <span>Delete Image from PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Text Controls Panel -->
+        <div id="panelTextControls" class="tool-content-panel" style="display: none;">
+          <div class="panel-section-title">
+            <span>Text Settings</span>
+            <!-- PROMINENT REMOVE OPTION FOR TEXT -->
+            <button id="btnRemoveTextFeature" class="btn btn-danger-outline btn-xs" type="button" title="Remove this text from the PDF">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+              </svg>
+              <span>Remove Text</span>
+            </button>
+          </div>
+
+          <div id="textStatusEmpty" class="panel-empty-hint">
+            <p>No text overlay added. Click <strong>+ Add / Edit Text</strong> above to create text.</p>
+          </div>
+
+          <div id="textStatusActive" class="panel-controls-body" style="display: none;">
+            <!-- Text Content -->
+            <div class="control-group">
+              <label for="inputTextContent">Text Content:</label>
+              <textarea id="inputTextContent" class="styled-textarea" rows="2" placeholder="Type text to add or replace...">CONFIDENTIAL</textarea>
+            </div>
+
+            <!-- Font Size & Color -->
+            <div class="control-row-2">
+              <div class="control-group">
+                <label for="selectFontSize">Font Size:</label>
+                <select id="selectFontSize" class="styled-select">
+                  <option value="12">12 px</option>
+                  <option value="14">14 px</option>
+                  <option value="16" selected>16 px</option>
+                  <option value="20">20 px</option>
+                  <option value="24">24 px</option>
+                  <option value="32">32 px</option>
+                  <option value="42">42 px</option>
+                  <option value="54">54 px</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <label for="selectTextColor">Color:</label>
+                <select id="selectTextColor" class="styled-select">
+                  <option value="dark" selected>Black / Dark</option>
+                  <option value="red">Red</option>
+                  <option value="blue">Blue</option>
+                  <option value="green">Green</option>
+                  <option value="white">White</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Whiteout / Background Coverage Box -->
+            <div class="control-group">
+              <label class="scope-card-box whiteout-highlight">
+                <input type="checkbox" id="chkWhiteoutBackground">
+                <div>
+                  <strong>Cover background with white box (Redact / Replace)</strong>
+                  <p>Hides and completely covers existing text underneath with an opaque white box.</p>
+                </div>
+              </label>
+            </div>
+
+            <!-- Alignment Presets for Text -->
+            <div class="control-group">
+              <label class="control-label">Align Text Position:</label>
+              <div class="text-align-buttons">
+                <button type="button" class="btn-align-text" data-pos="top-center">Top Header</button>
+                <button type="button" class="btn-align-text active" data-pos="center">Center</button>
+                <button type="button" class="btn-align-text" data-pos="bottom-center">Bottom Footer</button>
+              </div>
+              <small class="control-hint">Or drag the text box anywhere directly on the canvas!</small>
+            </div>
+
+            <!-- Apply Text to All Pages -->
+            <div class="control-group">
+              <label class="scope-card-box">
+                <input type="checkbox" id="chkApplyTextAllPages">
+                <div>
+                  <strong>Apply text to ALL pages in PDF</strong>
+                  <p>Repeats text across every page (e.g. headers, footers, watermarks).</p>
+                </div>
+              </label>
+            </div>
+
+            <!-- Direct Remove Button -->
+            <button id="btnDirectRemoveText" class="btn btn-danger-outline btn-block btn-sm" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+              <span>Remove Text from PDF</span>
+            </button>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- Center Stage Area (Free Space, Responsive, Infinite Canvas Feel) -->
+      <main class="studio-canvas-area" id="studioCanvasArea">
+
+        <!-- Loading Indicator -->
+        <div id="canvasLoader" class="canvas-loader" style="display: none;">
+          <div class="spinner"></div>
+          <p id="loaderMessage">Rendering page...</p>
+        </div>
+
+        <!-- Canvas Stage Wrapper with Generous Breathing Room -->
+        <div class="stage-outer-desk">
+          <div id="pageStageWrapper" class="page-stage-wrapper">
+            <!-- High-resolution Rendered PDF Page -->
+            <canvas id="mainPdfCanvas" class="main-pdf-canvas"></canvas>
+
+            <!-- Interactive Draggable Overlay Layer -->
+            <div id="canvasOverlayLayer" class="canvas-overlay-layer">
+              
+              <!-- Draggable Image Overlay with Explicit Delete Button -->
+              <div id="stageImageOverlay" class="canvas-overlay-item overlay-image-item" style="display: none;">
+                <!-- Drag Handle -->
+                <div class="overlay-handle-top" title="Drag to move image">⋮⋮ Move Image</div>
+                
+                <!-- Explicit Delete Button on the Element -->
+                <button id="btnOverlayDeleteImage" class="overlay-close-btn" type="button" title="Delete this image">
+                  &times;
+                </button>
+
+                <img id="overlayImgEl" src="" alt="Placed image">
+                
+                <div id="overlayScopeBadge" class="overlay-scope-tag">All Pages</div>
+              </div>
+
+              <!-- Draggable Text Overlay with Explicit Remove Button -->
+              <div id="stageTextOverlay" class="canvas-overlay-item overlay-text-item" style="display: none;">
+                <!-- Drag Handle -->
+                <div class="overlay-handle-top" title="Drag to move text">⋮⋮ Move Text</div>
+
+                <!-- Explicit Remove Button on the Element -->
+                <button id="btnOverlayRemoveText" class="overlay-close-btn" type="button" title="Remove this text">
+                  &times;
+                </button>
+
+                <span id="overlayTextSpan">CONFIDENTIAL</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+
+    <!-- Bottom Page Filmstrip (Quick 1-Click Page Jump) -->
+    <footer class="studio-filmstrip-bar">
+      <div class="filmstrip-label">Pages:</div>
+      <div id="filmstripContainer" class="filmstrip-thumbnails-row">
+        <!-- Page preview thumbnails populate here -->
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Vendor Libraries -->
+  <script src="vendor/pdf-lib.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/pdf-lib@1.17.9/dist/pdf-lib.min.js'"></script>
+  <script src="vendor/pdf.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'"></script>
+  <script src="vendor/jszip.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'"></script>
+  
+  <!-- Editor Script -->
+  <script src="editor.js"></script>
+</body>
+</html>
